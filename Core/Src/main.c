@@ -58,8 +58,10 @@ UART_HandleTypeDef huart2;
 
 Gyro5060_InitTypeDef  MPU6050_Data;
 
+float ServoRight=0;
+float ServoLeft=0;
 
-
+float k=1.2;
 
 
 /* USER CODE END PV */
@@ -146,14 +148,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-float ServoRight=0;
-
-float ServoLeft=0;
-
-float k=1.2;
-
-
-
 
 
   while (1)
