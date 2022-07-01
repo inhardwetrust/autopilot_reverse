@@ -8,8 +8,8 @@
 #ifndef INC_6050I2C_H_
 #define INC_6050I2C_H_
 
-#define MPU6050_KOEF_COMPL_R	0.005
-#define MPU6050_KOEF_COMPL_P	0.005
+#define MPU6050_KOEF_COMPL_R	0.045
+#define MPU6050_KOEF_COMPL_P	0.045
 
 void I2C_WriteBuffer(uint8_t I2C_ADDRESS, uint8_t *aTxBuffer, uint8_t TXBUFFERSIZE);
 void I2C_ReadBuffer(uint8_t I2C_ADDRESS, uint8_t RegAddr, uint8_t *aRxBuffer, uint8_t RXBUFFERSIZE);

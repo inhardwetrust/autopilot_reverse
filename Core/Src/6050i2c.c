@@ -148,8 +148,9 @@ void HAL_SYSTICK_Callback(void){
 
  		float Roll = mpu6050_readydata[4]- MPU6050_Data.fGY_Cal;
  		Roll = Roll/devider;
-
  		Roll+=MPU6050_Data.aRoll;
+
+
 
  		//if(fabsf(Roll) > 0.01)
 
@@ -180,6 +181,7 @@ void HAL_SYSTICK_Callback(void){
 
  		MPU6050_Data.aPitch=Pitch;
  		MPU6050_Data.aRoll=Roll;
+
 
  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
@@ -246,9 +248,7 @@ void HAL_SYSTICK_Callback(void){
   	  serial_buffer[shift+1]=0x20; /// space
   	  shift=FloatoSTR(serial_buffer, MPU6050_Data.aEileron_right, shift+2 );
 
-  	 serial_buffer[shift]=0x2c; /// 44 in dec
-  	 serial_buffer[shift+1]=0x20; /// space
-  	 shift=FloatoSTR(serial_buffer, MPU6050_Data.aYaw, shift+2 );
+
 
 
 

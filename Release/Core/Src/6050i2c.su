@@ -2,6 +2,6 @@
 ../Core/Src/6050i2c.c:45:6:I2C_ReadBuffer	40	static
 ../Core/Src/6050i2c.c:61:7:MPU6050_Init	24	static
 ../Core/Src/6050i2c.c:114:7:MPU6050_GetAllData	24	static
-../Core/Src/6050i2c.c:199:8:MPU6050_Calibrate	32	static
-../Core/Src/6050i2c.c:230:8:SendDataSP	24	static
+../Core/Src/6050i2c.c:201:8:MPU6050_Calibrate	32	static
+../Core/Src/6050i2c.c:232:8:SendDataSP	24	static
 ../Core/Src/6050i2c.c:140:6:HAL_SYSTICK_Callback	32	static
