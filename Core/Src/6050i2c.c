@@ -30,10 +30,10 @@ int16_t mpu6050_readydata[6];
   endstring[1] = 0x0a;
  */
 
-/// сделать статиком как было у Артема
 void I2C_WriteBuffer(uint8_t I2C_ADDRESS, uint8_t *aTxBuffer, uint8_t TXBUFFERSIZE) {
      while(HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)I2C_ADDRESS<<1, (uint8_t*)aTxBuffer, (uint16_t)TXBUFFERSIZE, (uint32_t)1000)!= HAL_OK){
          if (HAL_I2C_GetError(&hi2c2) != HAL_I2C_ERROR_AF){
+        	 // HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
             // _Error_Handler(__FILE__, aTxBuffer[0]);
          }
 
@@ -42,7 +42,6 @@ void I2C_WriteBuffer(uint8_t I2C_ADDRESS, uint8_t *aTxBuffer, uint8_t TXBUFFERSI
        while (HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY){}
  }
 
-/// сделать статиком как было у Артема
 void I2C_ReadBuffer(uint8_t I2C_ADDRESS, uint8_t RegAddr, uint8_t *aRxBuffer, uint8_t RXBUFFERSIZE){
 
      I2C_WriteBuffer(I2C_ADDRESS, &RegAddr, 1);
@@ -63,23 +62,23 @@ void I2C_ReadBuffer(uint8_t I2C_ADDRESS, uint8_t RegAddr, uint8_t *aRxBuffer, ui
 
      uint8_t buffer[7];
 
-     // включение/побудка модул�?
+     // power on
      buffer[0] = MPU6050_RA_PWR_MGMT_1;
      buffer[1] = 0x00;
      I2C_WriteBuffer(MPU6050_ADDRESS_AD0_LOW,buffer,2);
 
-     // конфиг гиро�?копа на ±500°/�?
+     // gyro config
      buffer[0] = MPU6050_RA_GYRO_CONFIG;
-     buffer[1] = 0x8; /* нормальное значение дл�? 500 */
-   //  buffer[1] = 0x0; /// пробное значение дл 250° �?ек
+     buffer[1] = 0x8; /* normal value for 500°/sec  */
+   //  buffer[1] = 0x0; /// normal value for 250° /sec
      I2C_WriteBuffer(MPU6050_ADDRESS_AD0_LOW,buffer,2);
 
-     // конфиг ак�?елерометра на ±8g
+     // config for ±8g
      buffer[0] = MPU6050_RA_ACCEL_CONFIG;
      buffer[1] = 0x10;
      I2C_WriteBuffer(MPU6050_ADDRESS_AD0_LOW,buffer,2);
 
-     /// конфиг прерываний - моё, может ео и не надо специально программить - хз
+     /// FIFO and interrupts
 //     buffer[0] = MPU6050_RA_INT_PIN_CFG; //x37
 //     buffer[1] = 0x00;
 //     I2C_WriteBuffer(MPU6050_ADDRESS_AD0_LOW,buffer,2);
@@ -87,12 +86,12 @@ void I2C_ReadBuffer(uint8_t I2C_ADDRESS, uint8_t RegAddr, uint8_t *aRxBuffer, ui
 //     buffer[0] = MPU6050_RA_INT_ENABLE; //x38
 //     buffer[1] = 0x01;
 //     I2C_WriteBuffer(MPU6050_ADDRESS_AD0_LOW,buffer,2);
-     /// конец моих настроек
+     /// end of FIFO and interrupts
 
-     // мои настройки dlpf - фильтр
+     // my settings dlpf - filter
 
-     buffer[0] = MPU6050_RA_CONFIG; //x1a регистр 26 на стр 13 мануала по регистрам
-     buffer[1] = MPU6050_DLPF_BW_188; // в 6050i2c.h - есть несколько значений для разных режимов
+     buffer[0] = MPU6050_RA_CONFIG; //x1a register 26 at page 13 of manual
+     buffer[1] = MPU6050_DLPF_BW_188; // в 6050i2c.h - there are some mosed of DLPF
      I2C_WriteBuffer(MPU6050_ADDRESS_AD0_LOW,buffer,2);
 
 
@@ -124,7 +123,7 @@ void I2C_ReadBuffer(uint8_t I2C_ADDRESS, uint8_t RegAddr, uint8_t *aRxBuffer, ui
         Data[i] = ((int16_t) ((uint16_t) accelbuffer[2 * i] << 8) + accelbuffer[2 * i + 1]);
 
     /* Registers 65 and 66 – Temperature Measurement */
-    //пока пропу�?каем Temperature in degrees C = (TEMP_OUT Register Value as a signed quantity)/340 + 36.53
+
 
     /* Registers 67 to 72 – Gyroscope Measurements */
     for (int i = 4; i < 7; i++)
@@ -165,7 +164,7 @@ void HAL_SYSTICK_Callback(void){
 
 
  		// Measure Z movement if it is
- 		if(Yaw > 0.01){       // Сравнение с дельтой
+ 		if(Yaw > 0.01){       // Compare with delta
  		        float _Y = sin(Yaw * 3.1415/180);
  		        Pitch += Roll  * _Y;
  		        Roll -= Pitch * _Y;
@@ -246,6 +245,12 @@ void HAL_SYSTICK_Callback(void){
   	  serial_buffer[shift]=0x2c; /// 44 in dec
   	  serial_buffer[shift+1]=0x20; /// space
   	  shift=FloatoSTR(serial_buffer, MPU6050_Data.aEileron_right, shift+2 );
+
+  	 serial_buffer[shift]=0x2c; /// 44 in dec
+  	 serial_buffer[shift+1]=0x20; /// space
+  	 shift=FloatoSTR(serial_buffer, MPU6050_Data.aYaw, shift+2 );
+
+
 
   	  // End of string - new string
   	  serial_buffer[shift]=0x0d;
