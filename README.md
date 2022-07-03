@@ -35,7 +35,7 @@ Thanks to authors.
 
 Next steps:
 It's very interesting aproach is run mpu6050 in a DMP mode(without MotionApps)
-This guy managed to work it on AVR
+This guy managed to work it on AVR<br>
 https://github.com/bzerk/MPU6050_DMP_6_axis_demo_/blob/master/MPU6050_DMP_6_axis_demo_.pde
 
 
